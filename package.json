@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-query-firebase/auth": "^1.0.0-dev.1",
+    "@tanstack/react-query": "^4.0.10",
     "firebase": "^9.8.4",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
