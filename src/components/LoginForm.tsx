@@ -1,18 +1,32 @@
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { auth } from '../services/firebase/firebase-config'
 
 export function LoginForm () {
+  useEffect(() => {
+    document.title = 'Login • Instagram'
+  })
   const [error, setError] = useState()
   const [loading, setLoading] = useState(false)
+  const [formInputs, setFormInputs] = useState({
+    email: '',
+    password: ''
+  })
+  const { email, password } = formInputs
+  const isSubmitInvalid = email === '' || password === ''
+  const handleFormInputs = (event: any) => {
+    setFormInputs({
+      ...formInputs,
+      [event.target.id]: event.target.value
+    })
+  }
   const handleSubmit = async (event: any) => {
     event.preventDefault()
-    const { email, password } = event.target.elements
     try {
       setLoading(true)
-      await signInWithEmailAndPassword(auth, email.value, password.value)
+      await signInWithEmailAndPassword(auth, email, password)
     } catch (error: any) {
       setError(error.message)
       console.log(error.code)
@@ -26,10 +40,10 @@ export function LoginForm () {
         <div className='flex justify-center my-5'>
             <img src={logo} alt='Instagram logo' className='h-16' />
         </div>
-          <form onSubmit={handleSubmit} className='w-64 flex flex-col'>
+          <form onChange={handleFormInputs} onSubmit={handleSubmit} className='w-64 flex flex-col'>
             <input id='email' type='text' placeholder='Email address' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
             <input id='password' type='password' placeholder='Password' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-            <button className='bg-blue-500 text-white rounded-md py-1 mt-1 font-medium'>
+            <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 mt-1 font-medium disabled:opacity-50'>
             {loading ? 'Loading...' : 'Login'}
             </button>
           </form>
