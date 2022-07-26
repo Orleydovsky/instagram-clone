@@ -2,14 +2,14 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../assets/logo.png'
+import instagram from '../assets/instagram.svg'
 import { auth, db } from '../services/firebase/firebase-config'
 
 export function SignUpForm () {
   useEffect(() => {
     document.title = 'Sign Up • Instagram'
   })
-  const [error, setError] = useState()
+  const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
   const [formInputs, setFormInputs] = useState({
     email: '',
@@ -35,23 +35,24 @@ export function SignUpForm () {
       await createUserWithEmailAndPassword(auth, email, password)
       await addDoc(collection(db, 'users'), {
         dateCreated: serverTimestamp(),
-        username,
         email,
+        followers: [],
+        following: [],
         name,
-        following: ['uid'],
-        followers: ['uid']
+        username,
+        uid: auth.currentUser?.uid
       })
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      error instanceof Error ? setError(error.message) : console.error(error)
     } finally {
       setLoading(false)
     }
   }
   return (
-    <div className='my-12'>
-      <div className='w-80 bg-white justify-center flex flex-col items-center border border-gray-200 py-5'>
-        <div className='flex justify-center my-5'>
-            <img src={logo} alt='Instagram logo' className='h-16' />
+    <div className='my-12 w-80'>
+      <div className='bg-white justify-center flex flex-col items-center border border-gray-200 py-5'>
+        <div className='flex justify-center my-6'>
+            <img src={instagram} alt='Instagram logo' className='h-12' />
         </div>
         <form onChange={handleFormInputs} onSubmit={handleSubmit} className='w-64 flex flex-col'>
           <input id='email' type='text' placeholder='Email Address' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
