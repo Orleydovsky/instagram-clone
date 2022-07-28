@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import instagram from '../assets/instagram.svg'
 import { auth } from '../services/firebase/firebase-config'
+import { Input } from './Lib'
 
-interface formInputs {
+export interface formInputs {
   email: string,
   password: string,
+  username?: string,
+  name?: string
 }
 
 export function LoginForm () {
@@ -24,7 +27,7 @@ export function LoginForm () {
   const handleFormInputs = (event: React.ChangeEvent<HTMLFormElement>) => {
     setFormInputs({
       ...formInputs,
-      [event.target.id]: event.target.value
+      [event.target.name]: event.target.value
     })
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,9 +48,9 @@ export function LoginForm () {
             <img src={instagram} alt='Instagram logo' className='h-12' />
         </div>
           <form onChange={handleFormInputs} onSubmit={handleSubmit} className='w-64 flex flex-col'>
-            <input id='email' type='text' placeholder='Email address' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-            <input id='password' type='password' placeholder='Password' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-            <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 mt-1 font-medium disabled:opacity-50'>
+            <Input name='email' type='text' placeholder='Email address'/>
+            <Input name='password' type='password' placeholder='Password'/>
+            <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 my-2 font-medium disabled:opacity-50'>
             {loading ? 'Loading...' : 'Login'}
             </button>
           </form>

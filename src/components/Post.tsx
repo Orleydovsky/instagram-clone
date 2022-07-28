@@ -6,18 +6,24 @@ import share from '../assets/share.svg'
 import bookmark from '../assets/bookmark.svg'
 import { Link } from 'react-router-dom'
 
-export default function Post () {
-  const userId = 'orleydovsky'
+interface PostType {
+  contentSrc: string,
+  caption: string,
+  username: string
+  likes: string[]
+}
+
+export default function Post ({ contentSrc, caption, username, likes }: PostType) {
   return (
     <article className='w-96 bg-white my-2 border border-gray-200 rounded-lg'>
-      <div className='p-3 flex flex-row'>
-        <Link to={userId}>
-          <Avatar source='https://i.pinimg.com/originals/6d/bf/f3/6dbff3702716c733a5301ee4c9e17726.jpg'/>
-          <h1 className='font-semibold mx-3'>orleydosky</h1>
+      <div className='p-3'>
+        <Link to={username} className='flex flex-row'>
+          <Avatar source={contentSrc}/>
+          <h1 className='font-semibold mx-3'>{username}</h1>
         </Link>
       </div>
       <div className='h-96 w-full bg-gray-200'>
-        <img className='object-cover w-full h-full' src='https://i.pinimg.com/originals/6d/bf/f3/6dbff3702716c733a5301ee4c9e17726.jpg'/>
+        <img className='object-cover w-full h-full' src={contentSrc}/>
       </div>
       <div className='px-4 py-3'>
         <div className='flex justify-between'>
@@ -31,13 +37,13 @@ export default function Post () {
           </div>
         </div>
         <div className='font-semibold text-sm py-1'>
-          4,136 Likes
+          {likes.length}  likes
         </div>
         <p className='text-gray-800 text-sm leading-5 line-clamp-2'>
-          <Link to={userId}>
-            <span className='font-semibold'>orleydosky </span>
+          <Link to={username}>
+            <span className='font-semibold'>{username}</span>
           </Link>
-          Enjoy the tranquility of Tulum's beautiful landscape from this spacious penthouse with tall windows, surrounded by palm
+          {caption}
         </p>
       </div>
       <form className='flex flex-row border-t p-3'>

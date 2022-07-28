@@ -1,17 +1,20 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import instagram from '../assets/instagram.svg'
 import { auth, db } from '../services/firebase/firebase-config'
+import { Input } from './Lib'
+import { formInputs } from './LoginForm'
 
 export function SignUpForm () {
+  const navigate = useNavigate()
   useEffect(() => {
     document.title = 'Sign Up • Instagram'
   })
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
-  const [formInputs, setFormInputs] = useState({
+  const [formInputs, setFormInputs] = useState<formInputs>({
     email: '',
     name: '',
     username: '',
@@ -19,10 +22,10 @@ export function SignUpForm () {
   })
   const { email, name, username, password } = formInputs
   const isSubmitInvalid = email === '' || name === '' || username === '' || password === ''
-  const handleFormInputs = (event: any) => {
+  const handleFormInputs = (event: React.ChangeEvent<HTMLFormElement>) => {
     setFormInputs({
       ...formInputs,
-      [event.target.id]: event.target.value
+      [event.target.name]: event.target.value
     })
   }
   const handleSubmit = async (event: any) => {
@@ -33,6 +36,7 @@ export function SignUpForm () {
       const { empty } = await getDocs(query(collection(db, 'users'), where('username', '==', username)))
       if (!empty) throw new Error("This username isn't available. Please try another")
       await createUserWithEmailAndPassword(auth, email, password)
+      navigate('/')
       await addDoc(collection(db, 'users'), {
         dateCreated: serverTimestamp(),
         email,
@@ -55,11 +59,11 @@ export function SignUpForm () {
             <img src={instagram} alt='Instagram logo' className='h-12' />
         </div>
         <form onChange={handleFormInputs} onSubmit={handleSubmit} className='w-64 flex flex-col'>
-          <input id='email' type='text' placeholder='Email Address' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-          <input id='name' type='text' placeholder='Full Name' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-          <input id='username' type='text' placeholder='Username' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-          <input id='password' type='password' placeholder='Password' className='bg-gray-50 border border-gray-200 rounded-sm p-2 text-sm mb-2' />
-          <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 mt-1 font-medium disabled:opacity-50'>{loading ? 'Loading...' : 'Sign up'}</button>
+          <Input name='email' type='text' placeholder='Email Address'/>
+          <Input name='name' type='text' placeholder='Full Name'/>
+          <Input name='username' type='text' placeholder='Username'/>
+          <Input name='password' type='password' placeholder='Password'/>
+          <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 my-2 font-medium disabled:opacity-50'>{loading ? 'Loading...' : 'Sign up'}</button>
           <div className='font-thin text-red-500 mt-5'>{error}</div>
         </form>
       </div>
