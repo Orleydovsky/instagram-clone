@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -30,13 +30,17 @@ export function SignUpForm () {
   }
   const handleSubmit = async (event: any) => {
     event.preventDefault()
-    console.log(email)
     setLoading(true)
     try {
       const { empty } = await getDocs(query(collection(db, 'users'), where('username', '==', username)))
       if (!empty) throw new Error("This username isn't available. Please try another")
       await createUserWithEmailAndPassword(auth, email, password)
       navigate('/')
+      if (auth.currentUser) {
+        updateProfile(auth.currentUser, {
+          displayName: username
+        })
+      }
       await addDoc(collection(db, 'users'), {
         dateCreated: serverTimestamp(),
         email,
