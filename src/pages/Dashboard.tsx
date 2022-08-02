@@ -1,35 +1,36 @@
 import { useQuery } from '@tanstack/react-query'
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Post from '../components/Post'
 import { db } from '../services/firebase/firebase-config'
 
-export default function Dashboard ({ following }: any) {
-  useEffect(() => {
-    document.title = 'Instagram'
-  }, [])
+interface DashboardType {
+  following: string[],
+}
+
+export default function Dashboard ({ following }: DashboardType) {
   if (following.length) {
     const { data: posts } = useQuery(
       ['posts'],
       () => getDocs(query(collection(db, 'posts'),
-        where('author', 'in', following)
+        where('authorId', 'in', following)
       )))
     return (
       <div className='w-full'>
         <div className='flex flex-col items-center'>
-        {
-          posts?.docs.map(post => {
-            const { contentSrc, caption, username, likes } = post.data()
+          {posts?.docs.map(post => {
+            const { contentSrc, caption, author, likes, comments } = post.data()
             return (
-              <Post
-                key={post.id}
-                contentSrc={contentSrc}
-                caption={caption}
-                username={username}
-                likes={likes}
-              />)
-          })
-        }
+            <Post
+              key={post.id}
+              postId={post.id}
+              contentSrc={contentSrc}
+              caption={caption}
+              author={author}
+              likes={likes}
+              comments={comments}
+            />)
+          })}
         </div>
       </div>
     )
