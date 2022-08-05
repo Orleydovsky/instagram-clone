@@ -4,9 +4,10 @@ import comment from '../assets/comment.svg'
 import share from '../assets/share.svg'
 import bookmark from '../assets/bookmark.svg'
 import { Link } from 'react-router-dom'
-import LikeButton from './LikeButton'
+import like from '../assets/like.svg'
+import liked from '../assets/liked.svg'
 import { auth, db } from '../services/firebase/firebase-config'
-import { arrayUnion, doc, setDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
 
 type commentObject = {
   author: string,
@@ -30,6 +31,7 @@ export default function Post ({ contentSrc, caption, author, likes: totalLikes, 
     author: auth.currentUser?.displayName ? auth.currentUser?.displayName : 'anonymous',
     comment: ''
   })
+  const isSubmitInvalid = commentInput.comment === ''
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentInput({
       ...commentInput,
@@ -53,55 +55,92 @@ export default function Post ({ contentSrc, caption, author, likes: totalLikes, 
       error instanceof Error ? console.log(error.message) : console.log(error)
     }
   }
-  const isSubmitInvalid = commentInput.comment === ''
+  const handleLike = async () => {
+    setIsLiked(!isLiked)
+    setLikes(isLiked ? likes - 1 : likes + 1)
+    const currentUser = auth.currentUser?.uid
+    try {
+      await setDoc(doc(db, 'posts', postId), {
+        likes: isLiked ? arrayRemove(currentUser) : arrayUnion(currentUser)
+      }, { merge: true })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <article className='w-96 bg-white my-2 border border-gray-200 rounded-lg'>
-      <div className='p-3'>
-        <Link to={author} className='flex flex-row'>
-          <Avatar source={contentSrc}/>
-          <h1 className='font-semibold mx-3'>{author}</h1>
-        </Link>
-      </div>
-      <div className='h-96 w-full bg-gray-200'>
+      <header className='h-14 flex flex-row items-center px-3'>
+        <span className='w-8'>
+          <Link to={`/${author}`}>
+            <Avatar source={contentSrc}/>
+          </Link>
+        </span>
+        <span className='font-semibold mx-2'>
+          <Link to={`/${author}`}>{author}</Link>
+        </span>
+      </header>
+      <div className='h-96 w-full bg-black'>
         <img className='object-cover w-full h-full' src={contentSrc}/>
       </div>
       <div className='px-4 py-3'>
-        <div className='flex justify-between'>
+        <section className='flex justify-between items-center'>
           <div className='flex items-center'>
-            <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} postId={postId}/>
-            <button className='mx-5 hover:opacity-50'><img src={comment}/></button>
-            <button className='hover:opacity-50'><img src={share}/></button>
+            <span>
+              <button onClick={handleLike} className='hover:opacity-50'>
+                <img src={isLiked ? liked : like}/>
+              </button>
+            </span>
+            <span>
+              <button className='mx-3 hover:opacity-50'><img src={comment}/></button>
+            </span>
+            <span>
+              <button className='hover:opacity-50'><img src={share}/></button>
+            </span>
           </div>
-          <div>
-            <button className='hover:opacity-50'><img src={bookmark}/></button>
-          </div>
-        </div>
-        <div className='font-semibold text-sm py-1'>
-          {!isLiked ? likes : likes + 1} likes
-        </div>
-        <p className='text-gray-800 text-sm leading-5 line-clamp-2'>
-          <Link to={author}>
-            <span className='font-semibold'>{author}&nbsp;</span>
-          </Link>
-          {caption}
-        </p>
-        <div>
+          <section>
+            <span>
+              <button className='hover:opacity-50'><img src={bookmark}/></button>
+            </span>
+          </section>
+        </section>
+        <section className='font-semibold text-sm py-1'>
+          {likes === 0 ? null : likes === 1 ? `${likes} like` : `${likes} likes`}
+        </section>
+        <section className='text-gray-800 text-sm leading-5 line-clamp-2'>
+          <span className='font-semibold'>
+            <Link to={author}>{author}&nbsp;</Link>
+          </span>
+          <span>{caption}</span>
+        </section>
+        <section>
           {comments.map(comment => {
             return (
-            <p key={postId} className='text-gray-800 text-sm leading-5 line-clamp-2'>
-          <Link to={comment.author}>
-            <span className='font-semibold'>{comment.author}&nbsp;</span>
-          </Link>
-          {comment.comment}
-        </p>
+              <div key={postId} className='text-gray-800 text-sm leading-5 line-clamp-2'>
+                <span className='font-semibold'>
+                  <Link to={comment.author}>
+                    {comment.author}&nbsp;
+                  </Link>
+                </span>
+                <span>
+                  {comment.comment}
+                </span>
+              </div>
             )
           })}
-        </div>
+        </section>
       </div>
-      <form onSubmit={handleCommentSubmit} className='flex flex-row border-t p-3'>
-      <input onChange={handleCommentChange} value={commentInput.comment} type='text' className='w-full overflow-hidden resize-none outline-none text-sm rounded-b-lg' name='comment' placeholder='Add a comment...'/>
-      <button disabled={isSubmitInvalid} className='text-blue-500 font-medium text-sm disabled:opacity-50'>Post</button>
+      <section>
+        <form onSubmit={handleCommentSubmit} className='flex flex-row border-t p-3'>
+          <input
+            onChange={handleCommentChange}
+            value={commentInput.comment}
+            type='text' className='w-full outline-none text-sm rounded-b-lg'
+            name='comment'
+            placeholder='Add a comment...'
+          />
+        <button disabled={isSubmitInvalid} className='text-blue-500 font-medium text-sm disabled:opacity-50'>Post</button>
       </form>
+      </section>
     </article>
   )
 }
