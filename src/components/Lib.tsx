@@ -1,28 +1,66 @@
+import camera from '../assets/camera.svg'
 import React from 'react'
 
 interface InputType {
   name: string,
   type: 'text' | 'password'
-  placeholder: string
+  placeholder: string,
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string
 }
 
-function Input ({ name, type, placeholder }: InputType) {
+function Input ({ name, type, placeholder, onChange, value }: InputType) {
   return (
-    <input name={name} type={type} placeholder={placeholder} className='bg-gray-50 border w-full border-gray-200 rounded-sm p-2 text-sm my-1 box-border'/>
+    <input
+      onChange={onChange}
+      value={value}
+      name={name} type={type}
+      placeholder={placeholder}
+      className='bg-gray-50 border w-full border-gray-200 rounded-sm p-2 text-sm my-1 box-border'
+    />
   )
 }
 
 interface AvatarType {
-  source: string
+  picture: string | undefined
+  size: 'small' | 'medium' | 'large'
+}
+function Avatar ({ picture, size }: AvatarType) {
+  let applySize
+  switch (size) {
+    case 'small': applySize = 8; break
+    case 'medium': applySize = 16; break
+    case 'large': applySize = 40; break
+    default: applySize = 8
+  }
+  return (
+    <div className={`w-${applySize} h-${applySize}`}>
+      <img src={picture} className='rounded-full aspect-square object-cover w-full h-full'/>
+    </div>
+  )
 }
 
-function Avatar ({ source }: AvatarType) {
+function NoPostsYet () {
   return (
-    <img src={source} className='rounded-full aspect-square object-cover'/>
+    <div className='flex flex-col justify-center'>
+      <img className='opacity-30 h-8 my-10' src={camera}/>
+      <h1 className='text-3xl font-light'>No Posts Yet</h1>
+    </div>
+  )
+}
+
+function NotFollowing () {
+  return (
+    <div className='col-span-3 text-center lg:col-span-2'>
+      <h1 className='font-bold text-xl'>Welcome to Instagram</h1>
+      <p>Follow people to start seeing the photos and videos they share</p>
+    </div>
   )
 }
 
 export {
   Input,
-  Avatar
+  Avatar,
+  NoPostsYet,
+  NotFollowing
 }
