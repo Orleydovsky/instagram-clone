@@ -1,22 +1,24 @@
-import { signOut } from 'firebase/auth'
-import React from 'react'
-import { auth } from '../services/firebase/firebase-config'
-import instagram from '../assets/instagram.svg'
 import { Link } from 'react-router-dom'
-import { Avatar } from './Lib'
+import { signOut } from 'firebase/auth'
+import { auth } from '../services/firebase/firebase-config'
+import { Avatar } from './lib'
+import instagram from '../assets/instagram.svg'
 
-export default function Header ({ profilepicture }: any) {
+interface HeaderTypes {
+  profilePicture?: string
+}
+
+export default function Header ({ profilePicture }: HeaderTypes) {
   return (
-    <header className='h-16 bg-white border border-gray-200 mb-5 px-5'>
+    <nav className='h-16 bg-white border border-gray-200 mb-5 px-5'>
       <div className='flex justify-between container mx-auto h-full max-w-screen-md items-center'>
         <Link to='/'>
           <img src={instagram} alt='Instagram logo' className='h-8'/>
         </Link>
         <input type='search' placeholder='Search' className='bg-gray-100 rounded-lg py-2 px-3 outline-none' />
-        {
-        auth.currentUser
-          ? <div className='flex flex-row' onClick={async () => await signOut(auth)}>
-              <Avatar source={profilepicture}/>
+        {auth.currentUser
+          ? <div className='flex flex-row h-8' onClick={async () => await signOut(auth)}>
+              <Avatar picture={profilePicture} size='small'/>
             </div>
           : <div className='flex flex-row'>
               <Link to='/' className='bg-blue-500 text-white rounded-md py-1 px-3 font-medium'>Log In</Link>
@@ -24,6 +26,6 @@ export default function Header ({ profilepicture }: any) {
             </div>
         }
       </div>
-    </header>
+    </nav>
   )
 }
