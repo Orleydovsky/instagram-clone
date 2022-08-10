@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import instagram from '../assets/instagram.svg'
 import { auth } from '../services/firebase/firebase-config'
-import { Input } from './Lib'
+import { Input } from './lib'
 
 export interface formInputs {
   email: string,
@@ -24,7 +24,7 @@ export function LoginForm () {
   })
   const { email, password } = formInputs
   const isSubmitInvalid = email === '' || password === ''
-  const handleFormInputs = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleFormInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormInputs({
       ...formInputs,
       [event.target.name]: event.target.value
@@ -47,9 +47,9 @@ export function LoginForm () {
         <div className='flex justify-center my-6'>
           <img src={instagram} alt='Instagram logo' className='h-12' />
         </div>
-        <form onChange={handleFormInputs} onSubmit={handleSubmit} className='w-64 flex flex-col'>
-          <Input name='email' type='text' placeholder='Email address'/>
-          <Input name='password' type='password' placeholder='Password'/>
+        <form onSubmit={handleSubmit} className='w-64 flex flex-col'>
+          <Input onChange={handleFormInputs} name='email' type='text' placeholder='Email address'/>
+          <Input onChange={handleFormInputs} name='password' type='password' placeholder='Password'/>
           <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 my-2 font-medium disabled:opacity-50'>
           {loading ? 'Loading...' : 'Login'}
           </button>

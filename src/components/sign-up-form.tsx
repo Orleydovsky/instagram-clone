@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import instagram from '../assets/instagram.svg'
 import { auth, db } from '../services/firebase/firebase-config'
-import { Input } from './Lib'
-import { formInputs } from './LoginForm'
+import { Input } from './lib'
+import { formInputs } from './login-form'
 
 export function SignUpForm () {
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ export function SignUpForm () {
   })
   const { email, name, username, password } = formInputs
   const isSubmitInvalid = email === '' || name === '' || username === '' || password === ''
-  const handleFormInputs = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleFormInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormInputs({
       ...formInputs,
       [event.target.name]: event.target.value
@@ -38,16 +38,17 @@ export function SignUpForm () {
       navigate('/')
       if (auth.currentUser) {
         updateProfile(auth.currentUser, {
-          displayName: username
+          displayName: username?.toLowerCase()
         })
       }
       await addDoc(collection(db, 'users'), {
         dateCreated: serverTimestamp(),
         email,
         followers: [],
-        following: [],
+        following: [auth.currentUser?.uid],
         name,
-        username,
+        profilePicture: `https://i.pravatar.cc/150?u=@${username?.toLowerCase()}`,
+        username: username?.toLowerCase(),
         uid: auth.currentUser?.uid
       })
     } catch (error) {
@@ -62,11 +63,11 @@ export function SignUpForm () {
         <div className='flex justify-center my-6'>
             <img src={instagram} alt='Instagram logo' className='h-12' />
         </div>
-        <form onChange={handleFormInputs} onSubmit={handleSubmit} className='w-64 flex flex-col'>
-          <Input name='email' type='text' placeholder='Email Address'/>
-          <Input name='name' type='text' placeholder='Full Name'/>
-          <Input name='username' type='text' placeholder='Username'/>
-          <Input name='password' type='password' placeholder='Password'/>
+        <form onSubmit={handleSubmit} className='w-64 flex flex-col'>
+          <Input onChange={handleFormInputs} name='email' type='text' placeholder='Email Address'/>
+          <Input onChange={handleFormInputs} name='name' type='text' placeholder='Full Name'/>
+          <Input onChange={handleFormInputs} name='username' type='text' placeholder='Username'/>
+          <Input onChange={handleFormInputs} name='password' type='password' placeholder='Password'/>
           <button disabled={isSubmitInvalid} className='bg-blue-500 text-white rounded-md py-1 my-2 font-medium disabled:opacity-50'>{loading ? 'Loading...' : 'Sign up'}</button>
           <div className='font-thin text-red-500 mt-5'>{error}</div>
         </form>

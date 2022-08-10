@@ -1,9 +1,8 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { LoginForm } from '../components/LoginForm'
-import NotFoundPage from './NotFoundPage'
-import { SignUpForm } from '../components/SignUpForm'
-function UnauthApp () {
+import { LoginForm } from '../components/login-form'
+import NotFoundPage from './not-found-page'
+import { SignUpForm } from '../components/sign-up-form'
+export default function UnauthApp () {
   return (
     <div className='w-full flex justify-center'>
       <Routes>
@@ -14,5 +13,3 @@ function UnauthApp () {
     </div>
   )
 }
-
-export default UnauthApp
