@@ -5,6 +5,9 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import ProfileHeader from '../components/profile/header'
 import ProfilePosts from '../components/profile/posts'
 import { FullPageSpinner, NoPostsYet } from '../components/lib'
+import ErrorBoundary from '../error/error-boundary'
+import ErrorFallback from '../error/profie-fallback'
+import ProfileFallback from '../error/profie-fallback'
 
 export default function Profile () {
   const { username } = useParams()
@@ -20,14 +23,18 @@ export default function Profile () {
         where('author', '==', username)
       )
     )
+  console.log(user)
   return (
-    userLoading || postsLoading
-      ? <FullPageSpinner/>
-      : user?.length
-        ? <div>No user</div>
-        : <main>
-            <ProfileHeader data={user} totalPosts={posts?.length}/>
-            {posts?.length ? <ProfilePosts posts={posts}/> : <NoPostsYet/>}
-          </main>
+    <ErrorBoundary FallbackComponent={ProfileFallback}>
+      {userLoading || postsLoading
+        ? <FullPageSpinner/>
+        : user?.length
+          ? <div>No user</div>
+          : <main>
+              <ProfileHeader data={user} totalPosts={posts?.length}/>
+              {posts?.length ? <ProfilePosts posts={posts}/> : <NoPostsYet/>}
+            </main>
+      }
+    </ErrorBoundary>
   )
 }

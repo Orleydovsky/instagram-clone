@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import instagram from '../../assets/instagram.svg'
 import React from 'react'
 import { HeaderMenuButton } from './menu-button'
-import { SearchBar } from './seach-bar'
+import { SearchBar } from './search-bar'
 
 export default function Header () {
   return (
