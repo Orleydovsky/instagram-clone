@@ -3,6 +3,9 @@ module.exports = {
     browser: true,
     es2021: true
   },
+  globals: {
+    JSX: true
+  },
   extends: [
     'plugin:react/recommended',
     'standard'

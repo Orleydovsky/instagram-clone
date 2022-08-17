@@ -1,28 +1,31 @@
 import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
 import { Fragment, useState } from 'react'
-import { auth, db } from '../../services/firebase/firebase-config'
-export function Actions ({
-  liked,
-  like,
-  comment,
-  share,
-  bookmark,
-  totalLikes,
-  postId
-}: any) {
-  console.log('postId on Actions', postId)
-  const [likes, setLikes] = useState(totalLikes.length)
-  const [isLiked, setIsLiked] = useState(Boolean(totalLikes.find((user: any) => user === auth.currentUser?.uid)))
+import { db } from '../../services/firebase/firebase-config'
+import comment from '../../assets/comment.svg'
+import share from '../../assets/share.svg'
+import bookmark from '../../assets/bookmark.svg'
+import like from '../../assets/like.svg'
+import liked from '../../assets/liked.svg'
+import { useUserContext } from '../../context/current-user'
+
+interface Props {
+  likes: string[],
+  postId: string
+}
+
+export function Actions ({ likes, postId }: Props) {
+  const { uid } = useUserContext()
+  const [likesCount, setLikesCount] = useState(likes.length)
+  const [isLiked, setIsLiked] = useState(Boolean(likes.find((user: string) => user === uid)))
   const handleLike = async () => {
     setIsLiked(!isLiked)
-    setLikes(isLiked ? likes - 1 : likes + 1)
-    const currentUser = auth.currentUser?.uid
+    setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
     try {
       await setDoc(doc(db, 'posts', postId), {
-        likes: isLiked ? arrayRemove(currentUser) : arrayUnion(currentUser)
+        likes: isLiked ? arrayRemove(uid) : arrayUnion(uid)
       }, { merge: true })
     } catch (error) {
-      console.log(error)
+      error instanceof Error ? console.error(error.message) : console.error(error)
     }
   }
   return (
@@ -48,7 +51,7 @@ export function Actions ({
         </section>
       </section>
       <section className='font-semibold text-sm py-1'>
-        {likes === 0 ? null : likes === 1 ? `${likes} like` : `${likes} likes`}
+        {likesCount === 0 ? null : likesCount === 1 ? `${likesCount} like` : `${likesCount} likes`}
       </section>
     </Fragment>
   )

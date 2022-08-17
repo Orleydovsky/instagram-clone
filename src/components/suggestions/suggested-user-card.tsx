@@ -1,19 +1,29 @@
 import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../../context/current-user'
 import { db } from '../../services/firebase/firebase-config'
 import { Avatar } from '../lib'
 
-export default function SuggestedUserCard ({ username, name, profilePicture, suggestedUserDocId, suggestedUserUid, userDoc }: any) {
+interface Props {
+  username: string,
+  name: string,
+  profilePicture: string,
+  docId: string,
+  uid: string
+}
+
+export default function SuggestedUserCard ({ username, name, profilePicture, docId, uid } : Props) {
+  const { uid: userDoc } = useContext(UserContext)
   const [isFollowed, setIsFollowed] = useState(false)
-  const handleFollow = async (suggestedUserUid: string, suggestedUserDocId: string) => {
+  const handleFollow = async (uid: string, docId: string) => {
     await setDoc(doc(db, 'users', userDoc), {
-      following: isFollowed ? arrayRemove(suggestedUserUid) : arrayUnion(suggestedUserUid)
+      following: isFollowed ? arrayRemove(uid) : arrayUnion(uid)
     }, {
       merge: true
     })
-    await setDoc(doc(db, 'users', suggestedUserDocId), {
-      followers: isFollowed ? arrayRemove(suggestedUserUid) : arrayUnion(suggestedUserUid)
+    await setDoc(doc(db, 'users', docId), {
+      followers: isFollowed ? arrayRemove(uid) : arrayUnion(uid)
     }, {
       merge: true
     })
@@ -22,7 +32,7 @@ export default function SuggestedUserCard ({ username, name, profilePicture, sug
   return (
     <div className='my-3 w-3/4 flex flex-row justify-between items-center'>
       <div className='flex flex-row'>
-        <div className='w-10 mr-2'>
+        <div className='mr-2'>
           <Link to={`/${username}`}>
             <Avatar picture={profilePicture} size='small'/>
           </Link>
@@ -37,7 +47,7 @@ export default function SuggestedUserCard ({ username, name, profilePicture, sug
         </div>
       </div>
       <div>
-        <button onClick={() => handleFollow(suggestedUserUid, suggestedUserDocId)} className='text-xs font-bold text-blue-500'>
+        <button onClick={() => handleFollow(uid, docId)} className='text-xs font-bold text-blue-500'>
           { isFollowed ? 'Unfollow' : 'Follow'}
         </button>
       </div>

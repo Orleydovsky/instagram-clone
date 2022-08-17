@@ -12,7 +12,7 @@ export interface formInputs {
   name?: string
 }
 
-export function LoginForm () {
+export default function LoginForm () {
   useEffect(() => {
     document.title = 'Login • Instagram'
   })

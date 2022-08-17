@@ -1,20 +1,14 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false
-    }
-  }
-})
 
-export function AppProviders ({ children }: any) {
+interface Props {
+  children: JSX.Element
+}
+
+export function AppProviders ({ children }: Props) {
   return (
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-          <Router>{children}</Router>
-      </QueryClientProvider>
+      <Router>{children}</Router>
     </React.StrictMode>
   )
 }

@@ -1,21 +1,18 @@
-import { onAuthStateChanged, User } from 'firebase/auth'
-import { lazy, useEffect, useState } from 'react'
+import { lazy } from 'react'
 import { auth } from './services/firebase/firebase-config'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import FullPageLoader from './pages/full-page-loader'
+
 const AuthApp = lazy(() => import('./pages/auth-app'))
 const UnauthApp = lazy(() => import('./pages/unauth-app'))
 
-function App () {
-  const [loggedIn, setLoggedIn] = useState<User | boolean | null>(auth.currentUser)
-  useEffect(() => {
-    onAuthStateChanged(auth, user => {
-      user ? setLoggedIn(true) : setLoggedIn(false)
-    })
-  }, [])
+export default function App () {
+  const [user, isLoading] = useAuthState(auth)
   return (
-    <div className='bg-gray-50 flex justify-center min-h-screen'>
-      {loggedIn ? <AuthApp/> : <UnauthApp/>}
-    </div>
+    isLoading
+      ? <FullPageLoader/>
+      : user
+        ? <AuthApp/>
+        : <UnauthApp/>
   )
 }
-
-export default App

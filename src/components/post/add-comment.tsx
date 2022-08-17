@@ -1,11 +1,14 @@
 import { arrayUnion, doc, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { auth, db } from '../../services/firebase/firebase-config'
+import { useUserContext } from '../../context/current-user'
+import { db } from '../../services/firebase/firebase-config'
 
-export function Comment ({ comments, setComments, postId }: any) {
+export function AddComment ({ comments, setComments, postId }: any) {
+  const { username } = useUserContext()
   const [commentInput, setCommentInput] = useState({
-    author: auth.currentUser?.displayName ? auth.currentUser?.displayName : 'anonymous',
-    comment: ''
+    author: username,
+    comment: '',
+    id: `${postId}/${comments.length}`
   })
   const isSubmitInvalid = commentInput.comment === ''
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +17,6 @@ export function Comment ({ comments, setComments, postId }: any) {
       comment: event.target.value
     })
   }
-  console.log('postId', postId)
   const handleCommentSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setComments([...comments, commentInput])

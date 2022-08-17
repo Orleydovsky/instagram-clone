@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Avatar } from '../lib'
 
-export function Header ({ author }: any) {
+export function Header ({ author }: {author: string}) {
   return (
     <header className='h-14 flex flex-row items-center px-3'>
       <span>

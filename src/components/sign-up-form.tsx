@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { collection, doc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import instagram from '../assets/instagram.svg'
@@ -7,7 +7,7 @@ import { auth, db } from '../services/firebase/firebase-config'
 import { Input } from './lib'
 import { formInputs } from './login-form'
 
-export function SignUpForm () {
+export default function SignUpForm () {
   const navigate = useNavigate()
   useEffect(() => {
     document.title = 'Sign Up • Instagram'
@@ -28,28 +28,23 @@ export function SignUpForm () {
       [event.target.name]: event.target.value
     })
   }
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
     try {
       const { empty } = await getDocs(query(collection(db, 'users'), where('username', '==', username)))
       if (!empty) throw new Error("This username isn't available. Please try another")
-      await createUserWithEmailAndPassword(auth, email, password)
+      const { user } = await createUserWithEmailAndPassword(auth, email, password)
       navigate('/')
-      if (auth.currentUser) {
-        updateProfile(auth.currentUser, {
-          displayName: username?.toLowerCase()
-        })
-      }
-      await addDoc(collection(db, 'users'), {
+      await setDoc(doc(db, 'users', user.uid), {
         dateCreated: serverTimestamp(),
         email,
         followers: [],
-        following: [auth.currentUser?.uid],
+        following: [],
         name,
         profilePicture: `https://i.pravatar.cc/150?u=@${username?.toLowerCase()}`,
         username: username?.toLowerCase(),
-        uid: auth.currentUser?.uid
+        uid: user.uid
       })
     } catch (error) {
       error instanceof Error ? setError(error.message) : console.error(error)

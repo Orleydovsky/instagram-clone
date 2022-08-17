@@ -6,6 +6,6 @@ import { AppProviders } from './components/app-providers'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <AppProviders>
-      <App />
+    <App/>
   </AppProviders>
 )

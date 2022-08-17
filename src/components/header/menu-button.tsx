@@ -19,7 +19,7 @@ export function HeaderMenuButton () {
       <MenuButton>
         <Avatar picture={profilePicture} size='small' />
       </MenuButton>
-      <MenuList className='bg-white shadow-lg w-40 rounded-md text-sm'>
+      <MenuList className='bg-white shadow-lg w-40 rounded-md text-sm right-32 top-3 relative'>
         <MenuLink as={Link} to={`/${username}`} className='w-full px-5 py-2 flex flex-row hover:bg-gray-50 hover:rounded-t-md'>
           <img src={profile} className='w-4 mr-2' />Profile
         </MenuLink>
