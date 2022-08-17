@@ -1,4 +1,5 @@
 import camera from '../assets/camera.svg'
+import loading from '../assets/loading.svg'
 import React from 'react'
 
 interface InputType {
@@ -42,7 +43,7 @@ function Avatar ({ picture, size }: AvatarType) {
 
 function NoPostsYet () {
   return (
-    <div className='flex flex-col justify-center'>
+    <div className='flex flex-col justify-center text-center'>
       <img className='opacity-30 h-8 my-10' src={camera}/>
       <h1 className='text-3xl font-light'>No Posts Yet</h1>
     </div>
@@ -58,9 +59,22 @@ function NotFollowing () {
   )
 }
 
+function Spinner () {
+  return <img src={loading} className='w-10 h-10 animate-spin-slow'/>
+}
+function FullPageSpinner () {
+  return (
+    <div className='flex h-screen'>
+      <img src={loading} className='w-10 h-10 animate-spin-slow m-auto'/>
+    </div>
+  )
+}
+
 export {
   Input,
   Avatar,
   NoPostsYet,
-  NotFollowing
+  NotFollowing,
+  Spinner,
+  FullPageSpinner
 }
