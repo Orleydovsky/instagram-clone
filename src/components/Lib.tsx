@@ -1,6 +1,7 @@
 import camera from '../assets/camera.svg'
 import loading from '../assets/loading.svg'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 interface InputType {
   name: string,
@@ -59,13 +60,22 @@ function NotFollowing () {
   )
 }
 
+function NoUserFound () {
+  return (
+    <div className='text-center container max-w-md mx-auto'>
+    <h1 className='font-bold text-xl'>No user found</h1>
+    <p>The link you followed may be broken, or the page may have been removed. Go back to <Link className='text-blue-600' to='/'>Instagram.</Link></p>
+    </div>
+  )
+}
+
 function Spinner () {
   return <img src={loading} className='w-10 h-10 animate-spin-slow'/>
 }
 function FullPageSpinner () {
   return (
-    <div className='flex h-screen'>
-      <img src={loading} className='w-10 h-10 animate-spin-slow m-auto'/>
+    <div className='w-full'>
+      <img src={loading} className='w-10 h-10 animate-spin-slow mx-auto'/>
     </div>
   )
 }
@@ -75,6 +85,7 @@ export {
   Avatar,
   NoPostsYet,
   NotFollowing,
+  NoUserFound,
   Spinner,
   FullPageSpinner
 }
