@@ -5,6 +5,7 @@ import { useUserContext } from '../../context/current-user'
 import { auth } from '../../services/firebase/firebase-config'
 import { Avatar } from '../lib'
 import profile from '../../assets/profile.svg'
+import '@reach/menu-button/styles.css'
 import React from 'react'
 
 export function HeaderMenuButton () {

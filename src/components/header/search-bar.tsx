@@ -6,6 +6,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { collection, query, where } from 'firebase/firestore'
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption, ComboboxOptionText } from '@reach/combobox'
 import search from '../../assets/search.svg'
+import '@reach/combobox/styles.css'
 
 export function SearchBar () {
   const navitage = useNavigate()
