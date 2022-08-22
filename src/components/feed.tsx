@@ -1,7 +1,7 @@
 import { collection, query, where } from 'firebase/firestore'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../services/firebase/firebase-config'
-import { NoPostsYet, Spinner } from './lib'
+import { FullPageSpinner, NoPostsYet } from './lib'
 import Post from './post'
 
 interface Props {
@@ -19,7 +19,7 @@ export default function Feed ({ following, uid }: Props) {
   return (
     !posts?.length
       ? <div className='grid col-span-3 lg:justify-center lg:items-start justify-center lg:col-span-2 w-full'>
-          {isLoading ? <Spinner/> : <NoPostsYet/>}
+          {isLoading ? <FullPageSpinner/> : <NoPostsYet/>}
         </div>
       : <div className='grid col-span-3 lg:justify-end justify-center lg:col-span-2 w-full'>
           {posts?.map((post) => {

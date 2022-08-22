@@ -70,7 +70,7 @@ function NoUserFound () {
 }
 
 function Spinner () {
-  return <img src={loading} className='w-10 h-10 animate-spin-slow'/>
+  return <img src={loading} className='w-5 h-5 animate-spin-slow'/>
 }
 function FullPageSpinner () {
   return (
