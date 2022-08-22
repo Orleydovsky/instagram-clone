@@ -1,10 +1,9 @@
-import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { UserContext, useUserContext } from '../../context/current-user'
+import { useUserContext } from '../../context/current-user'
 import { Avatar } from '../lib'
 
 export default function CurrentUserCard () {
-  const { name, username, profilePicture } = useUserContext(UserContext)
+  const { name, username, profilePicture } = useUserContext()
   return (
     <div className='w-full flex flex-row items-center'>
       <div className='w-16 mr-2'>
