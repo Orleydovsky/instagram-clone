@@ -1,8 +1,7 @@
-import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useUserContext } from '../../context/current-user'
-import { db } from '../../services/firebase/firebase-config'
+import { toggleFollow } from '../../services/firebase/firebase'
 import { Avatar, Spinner } from '../lib'
 
 interface Props {
@@ -13,22 +12,17 @@ interface Props {
   uid: string
 }
 
-export default function SuggestedUserCard ({ username, name, profilePicture, docId, uid } : Props) {
+export default function SuggestedUserCard ({ username, name, profilePicture, docId } : Props) {
   const { uid: userDoc } = useUserContext()
   const [isFollowed, setIsFollowed] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const handleFollow = async (uid: string, docId: string) => {
+  const handleFollow = async () => {
     setIsLoading(true)
-    await setDoc(doc(db, 'users', userDoc), {
-      following: isFollowed ? arrayRemove(uid) : arrayUnion(uid)
-    }, {
-      merge: true
-    })
-    await setDoc(doc(db, 'users', docId), {
-      followers: isFollowed ? arrayRemove(uid) : arrayUnion(uid)
-    }, {
-      merge: true
-    })
+    try {
+      await toggleFollow(userDoc, docId, isFollowed)
+    } catch (error) {
+      error instanceof Error ? console.error(error.message) : console.error(error)
+    }
     setIsLoading(false)
     setIsFollowed(!isFollowed)
   }
@@ -50,7 +44,7 @@ export default function SuggestedUserCard ({ username, name, profilePicture, doc
         </div>
       </div>
       <div>
-        <button onClick={() => handleFollow(uid, docId)} className='text-xs font-bold text-blue-500'>
+        <button onClick={handleFollow} className='text-xs font-bold text-blue-500'>
           {isLoading ? <Spinner/> : isFollowed ? 'Unfollow' : 'Follow'}
         </button>
       </div>
