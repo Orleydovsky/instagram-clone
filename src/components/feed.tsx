@@ -22,7 +22,7 @@ export default function Feed ({ following, uid }: Props) {
           {isLoading ? <FullPageSpinner/> : <NoPostsYet/>}
         </div>
       : <div className='grid col-span-3 lg:justify-end justify-center lg:col-span-2 w-full'>
-          {posts?.map((post) => {
+          {posts?.map(post => {
             return <Post key={post.postId} postData={post}/>
           })}
         </div>

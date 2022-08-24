@@ -1,12 +1,12 @@
-import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
 import { Fragment, useState } from 'react'
+import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
 import { db } from '../../services/firebase/firebase-config'
 import comment from '../../assets/comment.svg'
 import share from '../../assets/share.svg'
 import bookmark from '../../assets/bookmark.svg'
 import like from '../../assets/like.svg'
 import liked from '../../assets/liked.svg'
-import { useUserContext } from '../../context/current-user'
+import { useUserContext } from '../../hooks/use-user-context'
 
 interface Props {
   likes: string[],

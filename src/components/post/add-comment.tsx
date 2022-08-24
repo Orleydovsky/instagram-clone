@@ -1,9 +1,16 @@
-import { arrayUnion, doc, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { useUserContext } from '../../context/current-user'
+import { Comment } from './index'
+import { arrayUnion, doc, setDoc } from 'firebase/firestore'
 import { db } from '../../services/firebase/firebase-config'
+import { useUserContext } from '../../hooks/use-user-context'
 
-export function AddComment ({ comments, setComments, postId }: any) {
+interface Props {
+  comments: Comment[]
+  setComments: Function,
+  postId: string
+}
+
+export function AddComment ({ comments, setComments, postId }: Props) {
   const { username } = useUserContext()
   const [commentInput, setCommentInput] = useState({
     author: username,

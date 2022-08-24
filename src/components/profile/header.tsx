@@ -1,6 +1,7 @@
 import { DocumentData } from 'firebase/firestore'
 import { useState } from 'react'
-import { UserData, useUserContext } from '../../context/current-user'
+import { UserData } from '../../context/current-user'
+import { useUserContext } from '../../hooks/use-user-context'
 import { toggleFollow } from '../../services/firebase/firebase'
 import { auth } from '../../services/firebase/firebase-config'
 import { Avatar, Spinner } from '../lib'
@@ -49,7 +50,6 @@ export default function ProfileHeader ({ data, totalPosts }: Props) {
         </ul>
         <div>
           <h2 className='font-semibold'>{name}</h2>
-          <span>Love playing KSP</span>
         </div>
       </section>
     </header>

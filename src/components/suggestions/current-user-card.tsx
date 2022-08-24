@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useUserContext } from '../../context/current-user'
+import { useUserContext } from '../../hooks/use-user-context'
 import { Avatar } from '../lib'
 
 export default function CurrentUserCard () {

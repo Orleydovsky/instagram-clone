@@ -1,8 +1,8 @@
 import Feed from '../components/feed'
 import Suggestions from '../components/suggestions'
-import { useUserContext } from '../context/current-user'
 import DashBoardFallBack from '../error/dashboard-fallback'
 import ErrorBoundary from '../error/error-boundary'
+import { useUserContext } from '../hooks/use-user-context'
 
 export default function Dashboard () {
   const { following, uid } = useUserContext()

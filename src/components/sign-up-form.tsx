@@ -1,11 +1,18 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { collection, doc, getDocs, query, serverTimestamp, setDoc, where } from 'firebase/firestore'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import instagram from '../assets/instagram.svg'
+import { doesUsernameExist } from '../services/firebase/firebase'
 import { auth, db } from '../services/firebase/firebase-config'
 import { Input } from './lib'
-import { formInputs } from './login-form'
+
+interface FormInputs {
+  email: string,
+  name: string,
+  username: string,
+  password: string,
+}
 
 export default function SignUpForm () {
   const navigate = useNavigate()
@@ -14,14 +21,16 @@ export default function SignUpForm () {
   })
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
-  const [formInputs, setFormInputs] = useState<formInputs>({
+  const [formInputs, setFormInputs] = useState<FormInputs>({
     email: '',
     name: '',
     username: '',
     password: ''
   })
+
   const { email, name, username, password } = formInputs
   const isSubmitInvalid = email === '' || name === '' || username === '' || password === ''
+
   const handleFormInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormInputs({
       ...formInputs,
@@ -32,9 +41,9 @@ export default function SignUpForm () {
     event.preventDefault()
     setLoading(true)
     try {
-      const { empty } = await getDocs(query(collection(db, 'users'), where('username', '==', username)))
-      if (!empty) throw new Error("This username isn't available. Please try another")
+      await doesUsernameExist(username)
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
+      console.log('user', user)
       navigate('/')
       await setDoc(doc(db, 'users', user.uid), {
         dateCreated: serverTimestamp(),

@@ -5,11 +5,9 @@ import instagram from '../assets/instagram.svg'
 import { auth } from '../services/firebase/firebase-config'
 import { Input } from './lib'
 
-export interface formInputs {
+interface FormInputs {
   email: string,
   password: string,
-  username?: string,
-  name?: string
 }
 
 export default function LoginForm () {
@@ -18,7 +16,7 @@ export default function LoginForm () {
   })
   const [error, setError] = useState<string>()
   const [loading, setLoading] = useState(false)
-  const [formInputs, setFormInputs] = useState<formInputs>({
+  const [formInputs, setFormInputs] = useState<FormInputs>({
     email: '',
     password: ''
   })

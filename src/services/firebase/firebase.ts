@@ -1,4 +1,4 @@
-import { arrayRemove, arrayUnion, doc, setDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import { db } from './firebase-config'
 
 export const toggleFollow = async (currentUserUid: string, userToBeFollowedUid: string, isFollowed: boolean) => {
@@ -12,4 +12,13 @@ export const toggleFollow = async (currentUserUid: string, userToBeFollowedUid: 
   }, {
     merge: true
   })
+}
+
+export const doesUsernameExist = async (username: string) => {
+  const { empty } = await getDocs(
+    query(collection(db, 'users'),
+      where('username', '==', username)
+    )
+  )
+  if (!empty) throw new Error("This username isn't available. Please try another")
 }

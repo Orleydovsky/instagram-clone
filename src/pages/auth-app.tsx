@@ -6,6 +6,7 @@ import Dashboard from './dashboard'
 import { UserProvider } from '../context/current-user'
 
 export default function AuthApp () {
+  console.log('auth')
   useEffect(() => {
     document.title = 'Instagram'
   }, [])

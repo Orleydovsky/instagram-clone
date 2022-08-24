@@ -7,13 +7,13 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DocumentData, Timestamp } from 'firebase/firestore'
 
-interface Comment {
-  id: number,
+export interface Comment {
+  id: string,
   author: string,
   comment: string
 }
 
-interface PostDataType {
+export interface PostData {
   author: string,
   authorId: string,
   caption: string,
@@ -23,12 +23,9 @@ interface PostDataType {
   likes: string[],
   postId: string
 }
-interface Props {
-  postData: DocumentData
-}
 
-export default function Post ({ postData }: Props) {
-  const { contentSrc, caption, author, likes, comments: dataBaseComments, postId } = postData as PostDataType
+export default function Post ({ postData }: {postData: DocumentData}) {
+  const { contentSrc, caption, author, likes, comments: dataBaseComments, postId } = postData as PostData
   const [comments, setComments] = useState(dataBaseComments)
   return (
     <article className='w-96  border bg-white mb-4 border-gray-200 rounded-lg'>

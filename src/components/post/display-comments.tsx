@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
+import { Comment } from './index'
 
-export function Comments ({ comments }: any) {
+export function Comments ({ comments }: {comments: Comment[]}) {
   return (
     <section>
       {comments.length

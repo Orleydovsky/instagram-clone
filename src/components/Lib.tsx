@@ -3,7 +3,7 @@ import loading from '../assets/loading.svg'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-interface InputType {
+interface InputProps {
   name: string,
   type: 'text' | 'password'
   placeholder: string,
@@ -11,7 +11,7 @@ interface InputType {
   value?: string
 }
 
-function Input ({ name, type, placeholder, onChange, value }: InputType) {
+function Input ({ name, type, placeholder, onChange, value }: InputProps) {
   return (
     <input
       onChange={onChange}
@@ -23,11 +23,11 @@ function Input ({ name, type, placeholder, onChange, value }: InputType) {
   )
 }
 
-interface AvatarType {
+interface AvatarProps {
   picture: string | undefined
   size: 'small' | 'medium' | 'large'
 }
-function Avatar ({ picture, size }: AvatarType) {
+function Avatar ({ picture, size }: AvatarProps) {
   let applySize
   switch (size) {
     case 'small': applySize = 8; break

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useUserContext } from '../../context/current-user'
+import { useUserContext } from '../../hooks/use-user-context'
 import { toggleFollow } from '../../services/firebase/firebase'
 import { Avatar, Spinner } from '../lib'
 

@@ -1,4 +1,3 @@
-import { signOut } from 'firebase/auth'
 import { collection, query, Timestamp, where } from 'firebase/firestore'
 import { createContext, useContext } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -17,14 +16,6 @@ export interface UserData {
 }
 
 export const UserContext = createContext<UserData | null>(null)
-
-export function useUserContext () {
-  const context = useContext(UserContext)
-  if (!context) {
-    throw new Error('Oops! it seems like we were not able to find your information, please login again')
-  }
-  return context
-}
 
 export function UserProvider ({ children }: {children: JSX.Element}) {
   const [userData] =
