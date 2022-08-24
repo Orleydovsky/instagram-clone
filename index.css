@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --reach-menu-button: 1;
+}
+
+[data-reach-combobox-popover][data-state="idle"],
+[data-reach-combobox-popover][data-state="suggesting"],
+[data-reach-combobox-popover][data-state="navigating"],
+[data-reach-combobox-popover][data-state="interacting"] {
+  background-color: white;
+  border: none;
+  border-radius: 0.5rem;
+  min-width: 18rem;
+  padding: 0.5rem 0rem 0.5rem 0rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+

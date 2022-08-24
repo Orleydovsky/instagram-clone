@@ -40,19 +40,19 @@ export function SearchBar () {
       {searchResults && (
         <ComboboxPopover>
           {searchResults.length > 0
-            ? <ComboboxList className='bg-white w-72 rounded-lg shadow-lg py-2 relative right-20'>
+            ? <ComboboxList className='w-full'>
                 {searchResults.map((user) => {
-                  const { username, profilePicture } = user
+                  const { username, profilePicture, name } = user
                   return (
                     <ComboboxOption key={username} value={username}>
                       <Link to={`/${username}`}>
-                        <div className='w-full flex flex-row py-3 px-5'>
+                        <div className='w-full flex flex-row py-1 px-5'>
                           <div className='mr-2'>
                             <Avatar picture={profilePicture} size='small' />
                           </div>
                           <div className='text-xs'>
                             <div className='font-semibold'>
-                              {username}
+                              {name}
                             </div>
                             <div className='text-gray-400'>
                               <ComboboxOptionText />
@@ -64,7 +64,7 @@ export function SearchBar () {
                   )
                 })}
               </ComboboxList>
-            : <div className='bg-white rounded-lg shadow-lg text-center py-2 px-3 w-80 relative right-1/2'>
+            : <div className='text-center w-full'>
                 No results found
               </div>}
           </ComboboxPopover>
