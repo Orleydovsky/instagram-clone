@@ -1,13 +1,16 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
+    'cypress/globals': true
+
   },
   globals: {
     JSX: true
   },
   extends: [
     'plugin:react/recommended',
+    'plugin:cypress/recommended',
     'standard'
   ],
   parser: '@typescript-eslint/parser',
@@ -20,7 +23,8 @@ module.exports = {
   },
   plugins: [
     'react',
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'cypress'
   ],
   rules: {
     'react/no-unescaped-entities': 0,
