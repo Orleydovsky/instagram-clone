@@ -1,5 +1,5 @@
 import { collection, query, Timestamp, where } from 'firebase/firestore'
-import { createContext, useContext } from 'react'
+import { createContext } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import FullPageLoader from '../pages/full-page-loader'
 import { auth, db } from '../services/firebase/firebase-config'

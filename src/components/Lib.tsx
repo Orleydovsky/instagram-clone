@@ -16,7 +16,8 @@ function Input ({ name, type, placeholder, onChange, value }: InputProps) {
     <input
       onChange={onChange}
       value={value}
-      name={name} type={type}
+      name={name}
+      type={type}
       placeholder={placeholder}
       className='bg-gray-50 border w-full border-gray-200 rounded-sm p-2 text-sm my-1 box-border'
     />

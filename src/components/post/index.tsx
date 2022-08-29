@@ -28,7 +28,7 @@ export default function Post ({ postData }: {postData: DocumentData}) {
   const { contentSrc, caption, author, likes, comments: dataBaseComments, postId } = postData as PostData
   const [comments, setComments] = useState(dataBaseComments)
   return (
-    <article className='w-96  border bg-white mb-4 border-gray-200 rounded-lg'>
+    <article className='w-96  border bg-white mb-4 border-gray-200 rounded-lg snap-center'>
       <Header author={author}/>
       <Content contentSrc={contentSrc}/>
       <div className='px-4 py-3'>

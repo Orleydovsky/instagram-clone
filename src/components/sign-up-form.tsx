@@ -43,7 +43,6 @@ export default function SignUpForm () {
     try {
       await doesUsernameExist(username)
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
-      console.log('user', user)
       navigate('/')
       await setDoc(doc(db, 'users', user.uid), {
         dateCreated: serverTimestamp(),
