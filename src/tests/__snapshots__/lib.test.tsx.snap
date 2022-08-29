@@ -1,0 +1,93 @@
+// Vitest Snapshot v1
+
+exports[`renders Avatar 1`] = `
+<div
+  className="w-8 h-8"
+>
+  <img
+    className="rounded-full aspect-square object-cover w-full h-full"
+    src="src"
+  />
+</div>
+`;
+
+exports[`renders FullPageSpinner 1`] = `
+<div
+  className="w-full"
+>
+  <img
+    className="w-10 h-10 animate-spin-slow mx-auto"
+    src="/src/assets/loading.svg"
+  />
+</div>
+`;
+
+exports[`renders Input 1`] = `
+<input
+  className="bg-gray-50 border w-full border-gray-200 rounded-sm p-2 text-sm my-1 box-border"
+  name="name"
+  onChange={[Function]}
+  placeholder="placeholder"
+  type="text"
+/>
+`;
+
+exports[`renders NoPostsYet 1`] = `
+<div
+  className="flex flex-col justify-center text-center"
+>
+  <img
+    className="opacity-30 h-8 my-10"
+    src="/src/assets/camera.svg"
+  />
+  <h1
+    className="text-3xl font-light"
+  >
+    No Posts Yet
+  </h1>
+</div>
+`;
+
+exports[`renders NoUserFound 1`] = `
+<div
+  className="text-center container max-w-md mx-auto"
+>
+  <h1
+    className="font-bold text-xl"
+  >
+    No user found
+  </h1>
+  <p>
+    The link you followed may be broken, or the page may have been removed. Go back to 
+    <a
+      className="text-blue-600"
+      href="/"
+      onClick={[Function]}
+    >
+      Instagram.
+    </a>
+  </p>
+</div>
+`;
+
+exports[`renders NotFollowing 1`] = `
+<div
+  className="col-span-3 text-center lg:col-span-2"
+>
+  <h1
+    className="font-bold text-xl"
+  >
+    Welcome to Instagram
+  </h1>
+  <p>
+    Follow people to start seeing the photos and videos they share
+  </p>
+</div>
+`;
+
+exports[`renders Spinner 1`] = `
+<img
+  className="w-5 h-5 animate-spin-slow"
+  src="/src/assets/loading.svg"
+/>
+`;
